@@ -27,3 +27,6 @@ You also need to use your own host, you can use Amazon or Google for example.
 The geolocation checks do not work for the IP addresses 127.0.0.1 and 0.0.0.0, 
 which can be a problem when running the application locally or in a test environment.
 To enable/disable the check on the geolocation, set the property `geo.ip.lib.enabled` to true/false; this is false by default.
+
+![image](https://user-images.githubusercontent.com/22425915/143879901-0624e8e6-9148-455f-9e65-3221316eeaa7.png)
+
