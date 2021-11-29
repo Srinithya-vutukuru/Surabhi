@@ -28,5 +28,5 @@ The geolocation checks do not work for the IP addresses 127.0.0.1 and 0.0.0.0,
 which can be a problem when running the application locally or in a test environment.
 To enable/disable the check on the geolocation, set the property `geo.ip.lib.enabled` to true/false; this is false by default.
 
-![plot](arch.PNG)
+![plot](https://github.com/Srinithya-vutukuru/Surabhi/blob/main/arch.PNG)
 
