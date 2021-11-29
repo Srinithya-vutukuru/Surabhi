@@ -17,10 +17,19 @@
 		</div>
 	</nav>
 	<div class="container">
-		<h2>Currently logged in users</h2>
-		<div th:each="user : ${users}">
-			<p th:utext="${user}">user</p>
-		</div>
+		<h2 ></h2 >
+		<table class="table table-bordered">
+			<tr>			    
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Email</th>
+			</tr>
+			<tr th:each="user : ${users}">
+				<td th:text="${user.firstName}"></td>
+			    <td th:text="${user.lastName}"></td>	
+				<td th:text="${user.email}"></td>
+			</tr>
+		</table>
 	</div>
 </body>
 

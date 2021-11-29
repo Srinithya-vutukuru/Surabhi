@@ -1,0 +1,48 @@
+<html>
+
+<head>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+<title th:utext="#{label.pages.home.title}">home</title>
+</head>
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" th:href="@{/homepage.html}" th:utext="#{label.pages.home.title}">home</a>
+			</div>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a th:href="@{/logout}" th:utext="#{label.pages.logout}">logout</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div class="container">
+		<p th:text="${message}"></p >
+		
+		<form action="#" th:action="@{/offline/pay}" method="post">
+			<h2>Selected Items</h2>
+			<table class="table table-bordered">
+				<tr th:each="item, stat : ${selectedItems}">
+					<td th:text="${item.id}"></td>
+				    <td th:text="${item.item}"></td>	
+					<td th:text="${item.price}"></td>
+				</tr>
+			</table>
+			<p>You bill amount</p>
+			<p th:text="${cost}" field="*{method}" name="cost"></p >	
+            <div class="col-md-6 form-group">
+                <label>Payment Method</label>
+                <select class="form-control" field="*{method}" name="method" required>
+                    <option value="">Choose...</option>
+                    <option value="cash">Cash</option>
+                    <option value="card">Card</option>
+                </select>
+            </div>
+            <div class="col-md-3 form-group">
+				<button type="submit" value="submit" class="btn btn-success">Pay</button>
+            </div>
+		</form >
+	</div>
+</body>
+
+</html>

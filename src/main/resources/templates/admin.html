@@ -20,6 +20,131 @@
      <p sec:authorize="!hasAuthority('WRITE_PRIVILEGE')" th:utext="#{message.unauth}">unauth</p>
         
      <h1 sec:authorize="hasAuthority('WRITE_PRIVILEGE')" th:utext="#{label.pages.admin.message}">admin</h1>
-</div>
-</body>
+     
+     <br /> <br />
+    <h3><a th:href="@{/admin/loggedUsers}" th:utext="#{label.pages.users.message}">View logged in users</a></h3>
+	<br />	    
+    <h3><a th:href="@{/admin/loggedUsersFromSessionRegistry}" th:utext="#{label.pages.users.sessionregistry.message}">View logged in users</a></h3>
+ 	<br />
+ 	<h3> <a th:href="@{/admin/viewUsers}">View All Users</a></h3>
+ 	
+ 	<br />
+     		<h3>Create Users</h3>
+     		<form th:action="@{/admin/createUsers}" th:object="${UserWrapper}" method="post">
+                <div class="form-row">
+                    <div class="col-md-6 form-group">
+                        <label>First Name</label> 
+                        <input type="text" class="form-control" field="*{firstName}" name="firstName" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Last Name</label>
+                        <input type="text" class="form-control" field="*{lastName}" name="lastName" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Roles</label>
+                        <select class="form-control" field="*{roleType}" name="roleType" required>
+                            <option value="">Choose...</option>
+                            <option value="Admin Role">Admin Role</option>
+                            <option value="User Role">User Role</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" field="*{email}" name="email" required>
+                    </div>
+                    
+                    <div class="col-md-6 form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" field="*{password}" name="password" required>
+                    </div>
+
+                    <div class="col-md-6 form-group">
+                        <label>enable Sign In</label>
+	                    <input class="form-check-input" type="checkbox" field="*{enabled}" name="enabled">                    
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block mt-3">Save</button>
+            </form>   
+     		<h3>Update Users</h3>
+     		<form th:action="@{/admin/updateUsers}" th:object="${UserWrapper}" method="post">
+                <div class="form-row">
+                    <div class="col-md-6 form-group">
+                        <label>First Name</label>
+                        <input type="text" class="form-control" field="*{firstName}" name="firstName">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Last Name</label>
+                        <input type="text" class="form-control" field="*{lastName}" name="lastName">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Roles</label>
+                        <select class="form-control" field="*{roleType}" name="roleType">
+                            <option value="">Choose...</option>
+                            <option value="Admin Role">Admin Role</option>
+                            <option value="User Role">User Role</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" field="*{email}" name="email">
+                    </div>
+                    
+                    <div class="col-md-6 form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" field="*{password}" name="password">
+                    </div>
+
+                    <div class="col-md-6 form-group">
+                        <label>enable Sign In</label>
+	                    <input class="form-check-input" type="checkbox" field="*{enabled}" name="enabled">                    
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block mt-3">Update</button>
+            </form>   
+     		<h3>Delete Users</h3>
+     		<form th:action="@{/admin/deleteUsers}" th:object="${UserWrap3per}" method="post">
+                <div class="form-row">
+                    <div class="col-md-6 form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" field="*{email}" name="email">
+                    </div>
+                    <div class="col-md-6 form-group">
+                    	<label style="color:white">empty</label >
+                    	<button type="submit" class="btn btn-primary btn-block mt-3">Delete</button>
+                    </div>
+                </div>
+                
+            </form> 
+            
+     <h11>Orders & Bills</h1>
+     	<h3>Find by date</h3>
+ 		<form th:action="@{/admin/billByDate}" th:object="${Bill}" method="post">
+        	<div class="form-row">
+                <div class="col-md-6 form-group">
+                    <label>By Date</label>
+                    <input type="date" class="form-control" field="*{date}" name="date">
+                </div>
+                <div class="col-md-6 form-group">
+                	<label style="color:white">empty</label >
+                	<button type="submit" class="btn btn-primary btn-block mt-3">find</button>
+               	</div>
+            </div>
+            
+        </form>
+        <h3>Find by Month</h3>
+     		<form th:action="@{/admin/billByMonth}" th:object="${Bill}" method="post">
+                <div class="form-row">
+                    <div class="col-md-6 form-group">
+                        <label>By Date</label>
+                        <input type="date" class="form-control" field="*{date}" name="date">
+                    </div>
+                    <div class="col-md-6 form-group">
+                    	<label style="color:white">empty</label >
+                    	<button type="submit" class="btn btn-primary btn-block mt-3">find</button>
+                    </div>
+                </div>
+                
+            </form>    
+		</div>
+	</body>
 </html>

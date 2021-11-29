@@ -1,0 +1,68 @@
+<html>
+
+<head>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+<title th:utext="#{label.pages.home.title}">home</title>
+</head>
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" th:href="@{/homepage.html}" th:utext="#{label.pages.home.title}">home</a>
+			</div>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a th:href="@{/logout}" th:utext="#{label.pages.logout}">logout</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div class="container">
+		<h2>View All Items</h2>
+		<form action="#" th:action="@{/offline/selectItems}" th:object="${itemWrapper}" method="post">
+			<table class="table table-bordered">
+				<tr>			    
+				    <th>S.ID</th>	
+					<th>Item</th>
+					<th>Price</th>
+					<th></th>
+				</tr>
+				<tr th:each="item, stat : ${itemWrapper.listOfItems}">
+				    <td th:text="${item.id}"></td>
+				    <td th:text="${item.item}"></td>	
+					<td th:text="${item.price}"></td>
+					<td>
+						<input type="number" th:field="*{listOfItems[__${stat.index}__].status}" min="0" max="5" />
+						<input type="hidden" th:field="*{listOfItems[__${stat.index}__].id}" />
+				        <input type="hidden" th:field="*{listOfItems[__${stat.index}__].item}" />
+				        <input type="hidden" th:field="*{listOfItems[__${stat.index}__].price}" />
+					</td>
+				</tr >
+			</table>
+			<button type="submit" value="submit" class="btn btn-success">Submit</button>
+		</form >
+		<h3>Book Table</h3>
+		<form action="#" th:action="@{/offline/bookSeat}" th:object="${seat}" method="post">
+			<div class="col-md-3 form-group">
+                <input type="number" class="form-control" field="*{tableNo}" name="tableNo" min="0" max="5" placeholder="Table Number"  required>
+            </div>
+            <div class="col-md-3 form-group">
+                <input type="date" class="form-control" field="*{date}" name="date" required>
+            </div>
+            <div class="col-md-3 form-group">
+				<button type="submit" value="submit" class="btn btn-success">Book</button>
+            </div>
+		</form >
+		
+		<h3>FeedBack</h3>
+		<form action="#" th:action="@{/offline/feedback}" method="get">
+            <textarea  rows="5" cols="50" th:name="feedback"/>
+                
+            </textarea>
+            <div class="col-md-3 form-group">
+				<button type="submit" value="submit" class="btn btn-success">Submit</button>
+            </div>
+		</form >
+	</div>
+</body>
+
+</html>
