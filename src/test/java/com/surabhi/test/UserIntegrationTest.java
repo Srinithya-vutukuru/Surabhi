@@ -30,6 +30,8 @@ import com.surabhi.validation.EmailExistsException;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = { TestDbConfig.class, ServiceConfig.class, TestIntegrationConfig.class, LoginNotificationConfig.class})
 @Transactional
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(classes = {AppConfig.class})
 public class UserIntegrationTest {
 
     @Autowired

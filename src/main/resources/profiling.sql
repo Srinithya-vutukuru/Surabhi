@@ -1,7 +1,17 @@
-CREATE USER GUEST PASSWORD 'abc';
+CREATE VIEW IF NOT EXISTS ALLORDERS (id,email,items) 
+AS ( 
+    select id,email,items from bill
+); 
 
-CREATE VIEW TEST_VIEW AS SELECT * FROM Bill WHERE email = :email;
+CREATE VIEW IF NOT EXISTS ORDERS_BY_DATE (id,date,email,items) 
+AS ( 
+    select id,date,email,items from bill
+); 
 
-CREATE VIEW ORDERS_DATE AS SELECT * FROM Bill WHERE date > :date;
+CREATE VIEW IF NOT EXISTS ORDERS_BY_PRICE (id,amount,L̥email,items) 
+AS ( 
+    select id,amount,email,items from bill
+); 
 
-CREATE VIEW ORDERS_PRICE AS SELECT * FROM Bill WHERE amount > :amount;
+
+

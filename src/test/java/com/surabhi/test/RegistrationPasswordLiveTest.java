@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,8 +14,9 @@ import org.springframework.http.MediaType;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
+
 public class RegistrationPasswordLiveTest {
-    private final String BASE_URI = "http://localhost:8081/";
+    private final String BASE_URI = "http://localhost:8082/";
 
     @Test
     public void givenInvalidPassword_thenBadRequest() {
@@ -38,8 +40,13 @@ public class RegistrationPasswordLiveTest {
 
         // numeric sequence
         assertEquals(HttpStatus.BAD_REQUEST.value(), getResponseForPassword("123_zqrtU"));
-
+    }
+    
+    @Test
+    @Disabled
+    public void givenValidPassword_thenGoodRequest() {
         // valid password
+    	// works only if password is changed to right one in properties file
         assertEquals(HttpStatus.OK.value(), getResponseForPassword("12_zwRHIPKA"));
     }
 
