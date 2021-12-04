@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import com.surabhi.persistence.model.User;
 import com.surabhi.registration.OnRegistrationCompleteEvent;
-import com.surabhi.service.IUserService;
+import com.surabhi.service.IAdminService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
     @Autowired
-    private IUserService service;
+    private IAdminService service;
 
     @Autowired
     private MessageSource messages;

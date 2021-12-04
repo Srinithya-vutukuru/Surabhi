@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.surabhi.persistence.model.NewLocationToken;
 import com.surabhi.security.location.OnDifferentLocationLoginEvent;
-import com.surabhi.service.IUserService;
+import com.surabhi.service.IAdminService;
 import com.surabhi.web.error.UnusualLocationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class DifferentLocationChecker implements UserDetailsChecker {
 
     @Autowired
-    private IUserService userService;
+    private IAdminService userService;
 
     @Autowired
     private HttpServletRequest request;

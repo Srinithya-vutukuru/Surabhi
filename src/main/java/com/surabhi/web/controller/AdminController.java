@@ -17,7 +17,7 @@ import com.surabhi.persistence.model.User;
 import com.surabhi.persistence.model.UserWrapper;
 import com.surabhi.security.ActiveUserStore;
 import com.surabhi.service.BillService;
-import com.surabhi.service.IUserService;
+import com.surabhi.service.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
@@ -37,7 +38,7 @@ public class AdminController {
     ActiveUserStore activeUserStore;
 
     @Autowired
-    IUserService userService;
+    IAdminService userService;
     
     @Autowired
     BillService billService;
@@ -127,6 +128,27 @@ public class AdminController {
     	model.addAttribute("billItems",billService.viewBillByDate(date));
     	model.addAttribute("Cost",bills.stream().map(e-> e.getAmount()).reduce(Long::sum));
         model.addAttribute("action", "Bill Amount");        		
+        return "users";
+    }
+    
+    @GetMapping("/admin/viewSalesByCity")
+    public String viewSalesByCity(@RequestParam(value = "city", required = true) String city, final Model model) {
+    	model.addAttribute("saleItems",userService.findAllOrders(city));
+        model.addAttribute("action", "Bill List");        		
+        return "users";
+    }
+    
+    @GetMapping("/admin/viewSalesByMonth")
+    public String viewSalesByMonth(@RequestParam(value = "month", required = true) String month, final Model model) {
+    	model.addAttribute("saleItems",userService.findByMonth(month));
+        model.addAttribute("action", "Bill List");        		
+        return "users";
+    }
+    
+    @GetMapping("/admin/viewSalesByYear")
+    public String viewSalesByYear(@RequestParam(value = "year", required = true) String year, final Model model) {
+    	model.addAttribute("billItems",userService.findByYear(year));
+        model.addAttribute("action", "Bill List");        		
         return "users";
     }
     

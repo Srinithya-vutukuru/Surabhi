@@ -14,7 +14,7 @@ import com.surabhi.captcha.CaptchaServiceV3;
 import com.surabhi.captcha.ICaptchaService;
 import com.surabhi.persistence.model.User;
 import com.surabhi.registration.OnRegistrationCompleteEvent;
-import com.surabhi.service.IUserService;
+import com.surabhi.service.IAdminService;
 import com.surabhi.web.dto.UserDto;
 import com.surabhi.web.util.GenericResponse;
 
@@ -23,7 +23,7 @@ public class RegistrationCaptchaController {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private IUserService userService;
+    private IAdminService userService;
 
     @Autowired
     private ICaptchaService captchaService;

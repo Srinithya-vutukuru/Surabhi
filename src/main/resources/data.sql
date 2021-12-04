@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS MENU;
 CREATE TABLE IF NOT EXISTS MENU (  
 id INT AUTO_INCREMENT  PRIMARY KEY,  
 item VARCHAR(50) NOT NULL,  
@@ -35,6 +34,3 @@ insert into menu (id, item, price) values(27, 'Claremont planked shad', 250);
 insert into menu (id, item, price) values(28, 'G. H. Mumm Cos Extra Dry', 400);
 insert into menu (id, item, price) values(29, 'Cerealine with Milk', 0);
 insert into menu (id, item, price) values(30, 'Sliced Bananas', 1500);
-
-
-

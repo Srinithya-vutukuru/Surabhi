@@ -4,7 +4,7 @@ import com.surabhi.persistence.model.PasswordResetToken;
 import com.surabhi.persistence.model.User;
 import com.surabhi.persistence.model.VerificationToken;
 import com.surabhi.registration.OnRegistrationCompleteEvent;
-import com.surabhi.service.IUserService;
+import com.surabhi.service.IAdminService;
 import com.surabhi.web.dto.UserDto;
 import com.surabhi.web.error.UserAlreadyExistException;
 
@@ -44,7 +44,7 @@ public class OldRegistrationController {
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private IUserService userService;
+    private IAdminService userService;
 
     @Autowired
     private MessageSource messages;

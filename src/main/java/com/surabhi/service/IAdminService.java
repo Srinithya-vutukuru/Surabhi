@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import com.surabhi.persistence.model.AllOrders;
+import com.surabhi.persistence.model.AllOrdersByCity;
+import com.surabhi.persistence.model.MaxSales;
 import com.surabhi.persistence.model.NewLocationToken;
 import com.surabhi.persistence.model.PasswordResetToken;
 import com.surabhi.persistence.model.Privilege;
@@ -13,7 +16,7 @@ import com.surabhi.persistence.model.User;
 import com.surabhi.persistence.model.VerificationToken;
 import com.surabhi.web.dto.UserDto;
 
-public interface IUserService {
+public interface IAdminService {
 
     User registerNewUserAccount(UserDto accountDto);
 
@@ -66,4 +69,10 @@ public interface IUserService {
 	Role createRoleIfNotFound(String name, Collection<Privilege> privileges);
 
 	List<User> findAll();
+
+	List<MaxSales> findByMonth(String month);
+
+	List<MaxSales> findByYear(String year);
+
+	List<AllOrdersByCity> findAllOrders(String city);
 }

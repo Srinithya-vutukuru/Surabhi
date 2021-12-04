@@ -24,13 +24,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.maxmind.geoip2.DatabaseReader;
+import com.surabhi.persistence.dao.AllOrderViewRepository;
 import com.surabhi.persistence.dao.NewLocationTokenRepository;
+import com.surabhi.persistence.dao.OrdersByCityRepository;
 import com.surabhi.persistence.dao.PasswordResetTokenRepository;
 import com.surabhi.persistence.dao.PrivilegeRepository;
 import com.surabhi.persistence.dao.RoleRepository;
+import com.surabhi.persistence.dao.SalesRepository;
 import com.surabhi.persistence.dao.UserLocationRepository;
 import com.surabhi.persistence.dao.UserRepository;
 import com.surabhi.persistence.dao.VerificationTokenRepository;
+import com.surabhi.persistence.model.AllOrders;
+import com.surabhi.persistence.model.AllOrdersByCity;
+import com.surabhi.persistence.model.MaxSales;
 import com.surabhi.persistence.model.NewLocationToken;
 import com.surabhi.persistence.model.PasswordResetToken;
 import com.surabhi.persistence.model.Privilege;
@@ -43,7 +49,7 @@ import com.surabhi.web.error.UserAlreadyExistException;
 
 @Service
 @Transactional
-public class UserService implements IUserService {
+public class AdminService implements IAdminService {
 
     @Autowired
     private UserRepository userRepository;
@@ -78,6 +84,12 @@ public class UserService implements IUserService {
 
     @Autowired
     private PrivilegeRepository privilegeRepository;
+    
+    @Autowired
+    private SalesRepository salesRepository;
+    
+    @Autowired
+    private OrdersByCityRepository ordersByCityRepository;
 
     public static final String TOKEN_INVALID = "invalidToken";
     public static final String TOKEN_EXPIRED = "expired";
@@ -379,5 +391,20 @@ public class UserService implements IUserService {
     @Override
     public List<User> findAll(){
     	return userRepository.findAll();
+    }
+    
+    @Override
+    public List<AllOrdersByCity> findAllOrders(String city){
+    	return ordersByCityRepository.findByCountry(city);
+    }
+    
+    @Override
+    public List<MaxSales> findByMonth(String month){
+    	return salesRepository.findByMonth(month);
+    }
+    
+    @Override
+    public List<MaxSales> findByYear(String year){
+    	return salesRepository.findByYear(year);
     }
 }

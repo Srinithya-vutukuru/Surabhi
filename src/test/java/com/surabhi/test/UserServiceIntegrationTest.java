@@ -29,8 +29,8 @@ import com.surabhi.persistence.dao.VerificationTokenRepository;
 import com.surabhi.persistence.model.Role;
 import com.surabhi.persistence.model.User;
 import com.surabhi.persistence.model.VerificationToken;
-import com.surabhi.service.IUserService;
-import com.surabhi.service.UserService;
+import com.surabhi.service.IAdminService;
+import com.surabhi.service.AdminService;
 import com.surabhi.spring.LoginNotificationConfig;
 import com.surabhi.spring.ServiceConfig;
 import com.surabhi.spring.TestDbConfig;
@@ -44,7 +44,7 @@ import com.surabhi.web.error.UserAlreadyExistException;
 public class UserServiceIntegrationTest {
 
     @Autowired
-    private IUserService userService;
+    private IAdminService userService;
 
     @Autowired
     private UserRepository userRepository;
@@ -218,7 +218,7 @@ public class UserServiceIntegrationTest {
         userService.createVerificationTokenForUser(user, token);
         final long userId = user.getId();
         final String token_status = userService.validateVerificationToken(token);
-        assertEquals(token_status, UserService.TOKEN_VALID);
+        assertEquals(token_status, AdminService.TOKEN_VALID);
         user = userService.getUserByID(userId).get();
         assertTrue(user.isEnabled());
     }
@@ -231,7 +231,7 @@ public class UserServiceIntegrationTest {
         userService.createVerificationTokenForUser(user, token);
         userService.getVerificationToken(token).getId();
         final String token_status = userService.validateVerificationToken(invalid_token);
-        token_status.equals(UserService.TOKEN_INVALID);
+        token_status.equals(AdminService.TOKEN_INVALID);
     }
 
     @Test
@@ -245,7 +245,7 @@ public class UserServiceIntegrationTest {
         tokenRepository.saveAndFlush(verificationToken);
         final String token_status = userService.validateVerificationToken(token);
         assertNotNull(token_status);
-        token_status.equals(UserService.TOKEN_EXPIRED);
+        token_status.equals(AdminService.TOKEN_EXPIRED);
     }
 
     //

@@ -56,7 +56,7 @@ public class OfflineUserController {
     	Integer cost = selectedMenu.stream().map(e->e.getPrice()*e.getStatus()).reduce(0, Integer::sum);
     	String items = StringUtils.join(
     			selectedMenu.stream()
-    			.map(e->e.getId())
+    			.map(e->e.getItem())
     			.map(e-> String.valueOf(e))
     			.collect(Collectors.toList())
     			,',');
