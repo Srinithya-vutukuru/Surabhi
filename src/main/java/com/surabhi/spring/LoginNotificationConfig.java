@@ -20,7 +20,7 @@ public class LoginNotificationConfig {
     @Bean(name="GeoIPCity")
     public DatabaseReader databaseReader() throws IOException {
         File database = ResourceUtils
-                .getFile("classpath:maxmind/GeoLite2-City.mmdb");
+                .getFile("classpath:data/GeoLite2-City.mmdb");
         return new DatabaseReader.Builder(database)
                 .build();
     }

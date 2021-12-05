@@ -155,7 +155,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean(name="GeoIPCountry")
     public DatabaseReader databaseReader() throws IOException, GeoIp2Exception {
     	final File resource = ResourceUtils
-                .getFile("classpath:maxmind/GeoLite2-Country.mmdb");
+                .getFile("classpath:data/GeoLite2-Country.mmdb");
         return new DatabaseReader.Builder(resource).build();
     }
 

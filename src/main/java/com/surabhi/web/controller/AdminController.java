@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import com.surabhi.persistence.dao.BillRepository;
 import com.surabhi.persistence.model.Bill;
+import com.surabhi.persistence.model.Message;
 import com.surabhi.persistence.model.Privilege;
 import com.surabhi.persistence.model.Role;
 import com.surabhi.persistence.model.User;
@@ -18,8 +19,11 @@ import com.surabhi.persistence.model.UserWrapper;
 import com.surabhi.security.ActiveUserStore;
 import com.surabhi.service.BillService;
 import com.surabhi.service.IAdminService;
+import com.surabhi.service.KafkaProducerService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -42,6 +46,9 @@ public class AdminController {
     
     @Autowired
     BillService billService;
+    
+    @Autowired
+    KafkaProducerService kafkaProducerService;
 
     @GetMapping("/admin/loggedUsers")
     public String getLoggedUsers(final Locale locale, final Model model) { 
@@ -151,6 +158,29 @@ public class AdminController {
         model.addAttribute("action", "Bill List");        		
         return "users";
     }
+    
+    @KafkaListener(topics = "admin", groupId = "groupId")
+   	public void listenUserGroup(Message message) {
+       	
+		System.out.println("Received Message in group Admin: ");
+		System.out.println("From : " + message.getSender());
+		System.out.println("Date : " + message.getDate());
+		System.out.println("Message : "+ message.getMessage());
+       
+   	    
+   	}
+    @GetMapping("/admin/sendMessage")
+    public String sendMessage(@RequestParam(value = "message", required = true) String message,
+    		@RequestParam(value = "receiver", required = true) String receiver, final Model model) {
+    	Message msg = new Message();
+    	msg.setDate(new Date());
+    	msg.setMessage(message);
+    	msg.setReciver(receiver);
+    	msg.setSender("admin");
+    	kafkaProducerService.sendMessage(msg, "admin");
+        return "users";
+    }
+    
     
     @InitBinder
     public void initBinder(WebDataBinder binder, WebRequest request) {

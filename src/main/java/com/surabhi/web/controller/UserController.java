@@ -6,13 +6,19 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import com.surabhi.persistence.model.ItemWrapper;
+import com.surabhi.persistence.model.Message;
 import com.surabhi.persistence.model.SelectItems;
 import com.surabhi.persistence.model.User;
 import com.surabhi.service.BillService;
 import com.surabhi.service.IUserService;
+import com.surabhi.service.KafkaProducerService;
 import com.surabhi.service.MenuService;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -25,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
 
 @Controller
+@Getter
+@Setter
 public class UserController {
     
     @Autowired
@@ -35,6 +43,11 @@ public class UserController {
     
     @Autowired
     IUserService userService;
+    
+    @Autowired
+    KafkaProducerService kafkaProducerService;
+    
+    private User user = null;
     
     @GetMapping("/user/allItems")
     public String getAllItems(final Locale locale, final Model model) {
@@ -58,36 +71,72 @@ public class UserController {
     			.map(e-> String.valueOf(e))
     			.collect(Collectors.toList())
     			,',');
-    	final Authentication curAuth = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) curAuth.getPrincipal();
-    	billService.saveBill(cost.longValue(), new Date(), currentUser.getEmail(), items);
+    	if(user==null)
+    		setUser();
+    	billService.saveBill(cost.longValue(), new Date(), user.getEmail(), items);
     	model.addAttribute("cost", cost);
     	return "successMail";
     }
     
     @GetMapping("/user/viewAllOrders")
     public String getAllOrders(final Locale locale, final Model model) {
-    	final Authentication curAuth = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) curAuth.getPrincipal();
-        model.addAttribute("items", userService.findByEmail(currentUser.getEmail()));
+    	if(user==null)
+    		setUser();
+        model.addAttribute("items", userService.findByEmail(user.getEmail()));
         return "orderList";
     }
     
     @GetMapping("/user/viewOrdersByDate")
     public String viewOrdersByDate(@RequestParam(value = "date", required = true) Date date, final Model model) {
-    	final Authentication curAuth = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) curAuth.getPrincipal();
-        model.addAttribute("itemsByDate", userService.findByDate(date,currentUser.getEmail()));
+    	if(user==null)
+    		setUser();
+        model.addAttribute("itemsByDate", userService.findByDate(date,user.getEmail()));
         return "orderList";
     }
     
     @GetMapping("/user/viewOrdersByPrice")
     public String viewOrdersByPrice(@RequestParam(value = "amount", required = true) Long amount, final Model model) {
-    	final Authentication curAuth = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) curAuth.getPrincipal();
-        model.addAttribute("itemsByPrice", userService.findByPrice(amount,currentUser.getEmail()));
+    	if(user==null)
+    		setUser();
+        model.addAttribute("itemsByPrice", userService.findByPrice(amount,user.getEmail()));
         return "orderList";
     }
+    
+    
+    @KafkaListener(topics = "user", groupId = "groupId")
+	public void listenUserGroup(Message message) {
+    	if(user==null)
+    		setUser();
+    	if(message.getReciver().equalsIgnoreCase(user.getEmail())) {
+    		System.out.println("Received Message in group User: ");
+    		System.out.println("From : " + message.getSender());
+    		System.out.println("Date : " + message.getDate());
+    		System.out.println("Message : "+ message.getMessage());
+    	}
+	    
+	}
+    
+    @GetMapping("/user/sendMessage")
+    public String sendMessage(@RequestParam(value = "message", required = true) String message,
+    		@RequestParam(value = "receiver", required = true) String receiver, final Model model) {
+    	if(user==null)
+    		setUser();
+    	Message msg = new Message();
+    	msg.setDate(new Date());
+    	msg.setMessage(message);
+    	msg.setReciver(receiver);
+    	msg.setSender(this.user.getEmail());
+    	kafkaProducerService.sendMessage(msg, "user");
+         		
+        return "users";
+    }
+    
+    
+    private void setUser() {
+    	final Authentication curAuth = SecurityContextHolder.getContext().getAuthentication();
+        this.user = (User) curAuth.getPrincipal();
+    }
+    
     
 }
 
